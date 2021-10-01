@@ -20,6 +20,8 @@ namespace ChilliSoftAssessment.Data
                                                new Employee { id = 2, EmployeeId = "EMID02", EmployeeName = "KatelynReddy", EmployeePosition = "Member", EmployeeStatus = "Employeed" },
                                                new Employee { id = 3, EmployeeId = "EMID03", EmployeeName = "ShanMchelm", EmployeePosition = "MinutesMaster", EmployeeStatus = "Employeed" }
                                                 );
+            builder.Entity<Item>().HasData(new Item { id = 1, EmployeeResponsible = "EMID01", Description = "Disucessing new potencial projects", Categorey = "Discussion", ItemId = "ProjectId1", ItemName = "Project Meeting" },
+                                            new Item{ id = 2 , EmployeeResponsible = "EMID02" , Description = "Disucessing potencial project fixes" , Categorey = "Discussion", ItemId ="ProjectId2" , ItemName = "Project Discussion"});
 
             base.OnModelCreating(builder);
         }

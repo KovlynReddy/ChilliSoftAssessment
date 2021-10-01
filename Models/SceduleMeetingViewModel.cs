@@ -11,13 +11,14 @@ namespace ChilliSoftAssessment.Models
         public DateTime Date { get; set; }
         public DateTime Time { get; set; }
 
+        public List<RoomHeadViewModel> Topics { get; set; } = new List<RoomHeadViewModel>();
         public List<Item> Items { get; set; } = new List<Item>();
         public List<Item> SelectedItems { get; set; } = new List<Item>();
-        public Item SelectedItem { get; set; }
+        public string SelectedItem { get; set; }
 
         public List<Employee> Employees { get; set; } = new List<Employee>();
         public List<Employee> SelectedEmployees { get; set; } = new List<Employee>();
-        public Employee SelectedEmployee { get; set; }
+        public string SelectedEmployee { get; set; }
 
         public DateTime DateSceduled { get; set; }
 

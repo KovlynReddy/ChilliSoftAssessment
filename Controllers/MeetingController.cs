@@ -1,5 +1,6 @@
 ﻿using ChilliSoftAssessment.Models;
 using ChilliSoftDLL.DataAccess.Interfaces;
+using ChilliSoftDLL.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -22,17 +23,85 @@ namespace ChilliSoftAssessment.Controllers
         }
 
         [HttpGet]
-        public IActionResult SceduleMeeting() { return View(); }
+        public IActionResult JoinMeeting() {
+
+            BaseRoomViewModel model = new BaseRoomViewModel();
+
+            return View("DemoRoom",model); }
+        [HttpGet]
+        public IActionResult AddItem() { return View(); }
+        [HttpPost]
+        public IActionResult AddItem(Item model) { return View(); }
+
+        [HttpPost]
+        public IActionResult SceduleMeeting(SceduleMeetingViewModel model) {
+            model.Employees = db.GetAllEmployees();
+            model.Items = db.GetAllItems();
+
+            var newmeeting = new Meeting();
+            var assignedItem = new Item();
+            var item = model.SelectedItem;
+
+            if (model.Done)
+            {
+                newmeeting.MeetingId = Guid.NewGuid().ToString();
+                newmeeting.MinutesMaster = User.Identity.Name;
+                newmeeting.StartDateTime = model.DateSceduled;
+                newmeeting.Caption = model.Caption;
+                newmeeting.Type = model.Caption;
+                assignedItem = new Item();
+                assignedItem.ItemId = item;
+                assignedItem.EmployeeResponsible = model.SelectedEmployee;
+                model.SelectedItems.Add(assignedItem);
+
+                foreach (var aitem in model.SelectedItems)
+                {
+                    
+                    aitem.LastMeetingId = newmeeting.MeetingId ;
+
+                    db.AddItem(aitem);
+                } // asssign item , employee and minute master
+   
+                db.AddMeeting(newmeeting);
+                return View("Index","Home");
+            }
+      
+            assignedItem = new Item();
+            assignedItem.ItemId = item;
+            assignedItem.EmployeeResponsible = model.SelectedEmployee;
+            model.SelectedItems.Add(assignedItem);
+            return View(model); }
+
+        [HttpGet]
+        public IActionResult SceduleMeeting() {
+
+            SceduleMeetingViewModel model = new SceduleMeetingViewModel();
+
+            model.Employees = db.GetAllEmployees();
+            model.Items = db.GetAllItems();
+
+            return View(model);
+        }
 
 
         [HttpGet]
         public IActionResult StartMeeting() { return View(); }
 
         [HttpGet]
-        public IActionResult StartAMeeting() { return View(); }
+        public IActionResult StartAMeeting() { 
+           
+
+
+            return View(); 
+        }
 
         [HttpGet]
-        public IActionResult Rooms() { return View(); }
+        public IActionResult Rooms() {
+
+            var meetings = db.GetAllMeetings();
+
+
+            return View("AvalibleRooms",meetings); }
 
 
         [HttpGet]

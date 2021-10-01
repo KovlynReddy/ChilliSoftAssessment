@@ -14,7 +14,7 @@
     }
 }
 
-<form asp-action="AddParcel">
+<form asp-action="SceduleMeeting">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
     @if (Model.SelectedEmployees != null && Model.SelectedEmployees.Count > 0)
@@ -27,39 +27,48 @@
             <input asp-for="SelectedEmployees[i].EmployeePosition" type="hidden" />
 
         }
+    }
+    @if (Model.SelectedItems != null && Model.SelectedItems.Count > 0)
+    {
         @for (int i = 0; i < Model.SelectedItems.Count(); i++)
         {
             <input asp-for="SelectedItems[i].ItemId" type="hidden" />
             <input asp-for="SelectedItems[i].ItemName" type="hidden" />
             <input asp-for="SelectedItems[i].Description" type="hidden" />
+            <input asp-for="SelectedItems[i].LastMeetingId" type="hidden" />
+            <input asp-for="SelectedItems[i].Categorey" type="hidden" />
+            <input asp-for="SelectedItems[i].EmployeeResponsible" type="hidden" />
+            <input asp-for="SelectedItems[i].ItemTalker" type="hidden" />
 
         }
     }
-    <div class="form-group">
-        <label asp-for="Date" class="control-label"></label>
-        <input asp-for="Date"></input>
-    </div>
-    <div class="form-group">
-        <label asp-for="Caption" class="control-label"></label>
-        <input asp-for="Caption" class="form-control" />
-        <span asp-validation-for="Caption" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="SelectedItem" class="control-label"></label>
-        <select asp-for="SelectedItem" asp-items="item"></select>
-        <span asp-validation-for="SelectedItem" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="SelectedEmployee" class="control-label"></label>
-        <select asp-for="SelectedEmployee" asp-items="attendies"></select>
-        <span asp-validation-for="SelectedEmployee" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Done" class="control-label"></label>
-        <input asp-for="Done" ></input>
-        <span asp-validation-for="Done" class="text-danger"></span>
-    </div>
+        <div class="form-group">
+            <label asp-for="Date" class="control-label"></label>
+            <input asp-for="Date"></input>
+        </div>
+        <div class="form-group">
+            <label asp-for="Caption" class="control-label"></label>
+            <input asp-for="Caption" class="form-control" />
+            <span asp-validation-for="Caption" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="SelectedItem" class="control-label"></label>
+            <select asp-for="SelectedItem" asp-items="item"></select>
+            <span asp-validation-for="SelectedItem" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="SelectedEmployee" class="control-label"></label>
+            <select asp-for="SelectedEmployee" asp-items="attendies"></select>
+            <span asp-validation-for="SelectedEmployee" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Done" class="control-label"></label>
+            <input asp-for="Done"></input>
+            <span asp-validation-for="Done" class="text-danger"></span>
+        </div>
 
+        <input type="submit" name="name" value="Start" />
+    </form>
     @if (Model.SelectedEmployees != null && Model.SelectedEmployees.Count > 0)
     {
 
@@ -81,5 +90,3 @@
         }
 
     }
-    <input type="submit" name="name" value="Start" />
-</form>
