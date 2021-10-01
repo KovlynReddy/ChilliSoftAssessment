@@ -1,0 +1,85 @@
+﻿@model SceduleMeetingViewModel
+
+@{
+    List<SelectListItem> item = new List<SelectListItem>();
+    List<SelectListItem> attendies = new List<SelectListItem>();
+    if (Model.Items != null)
+    {
+        var allitems = Model.Items;
+        item = allitems.Select(a => new SelectListItem { Text = a.ItemName, Value = a.ItemId }).ToList();
+
+        var allattendies = Model.Employees;
+        attendies = allattendies.Select(a => new SelectListItem { Text = a.EmployeeName, Value = a.EmployeeId }).ToList();
+
+    }
+}
+
+<form asp-action="AddParcel">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    @if (Model.SelectedEmployees != null && Model.SelectedEmployees.Count > 0)
+    {
+
+        @for (int i = 0; i < Model.SelectedEmployees.Count(); i++)
+        {
+            <input asp-for="SelectedEmployees[i].EmployeeId" type="hidden" />
+            <input asp-for="SelectedEmployees[i].EmployeeName" type="hidden" />
+            <input asp-for="SelectedEmployees[i].EmployeePosition" type="hidden" />
+
+        }
+        @for (int i = 0; i < Model.SelectedItems.Count(); i++)
+        {
+            <input asp-for="SelectedItems[i].ItemId" type="hidden" />
+            <input asp-for="SelectedItems[i].ItemName" type="hidden" />
+            <input asp-for="SelectedItems[i].Description" type="hidden" />
+
+        }
+    }
+    <div class="form-group">
+        <label asp-for="Date" class="control-label"></label>
+        <input asp-for="Date"></input>
+    </div>
+    <div class="form-group">
+        <label asp-for="Caption" class="control-label"></label>
+        <input asp-for="Caption" class="form-control" />
+        <span asp-validation-for="Caption" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="SelectedItem" class="control-label"></label>
+        <select asp-for="SelectedItem" asp-items="item"></select>
+        <span asp-validation-for="SelectedItem" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="SelectedEmployee" class="control-label"></label>
+        <select asp-for="SelectedEmployee" asp-items="attendies"></select>
+        <span asp-validation-for="SelectedEmployee" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Done" class="control-label"></label>
+        <input asp-for="Done" ></input>
+        <span asp-validation-for="Done" class="text-danger"></span>
+    </div>
+
+    @if (Model.SelectedEmployees != null && Model.SelectedEmployees.Count > 0)
+    {
+
+        @foreach (var employee in Model.SelectedEmployees)
+        {
+            <partial name="_Employee" model="employee" />
+
+        }
+
+    }
+
+    @if (Model.SelectedItems != null && Model.SelectedItems.Count > 0)
+    {
+
+        @foreach (var employee in Model.SelectedItems)
+        {
+            <partial name="_ItemHead" model="employee" />
+
+        }
+
+    }
+    <input type="submit" name="name" value="Start" />
+</form>

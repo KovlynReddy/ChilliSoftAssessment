@@ -29,5 +29,7 @@ namespace ChilliSoftAssessment.Data
         public DbSet<Item> Items { get; set; }
         public DbSet<MinutesEntry> MinutesEntry { get; set; }
         public DbSet<Report> Reports { get; set; }
+        public DbSet<Room> Rooms { get; set; }
+        public DbSet<Message> Messages { get; set; }
     }
 }

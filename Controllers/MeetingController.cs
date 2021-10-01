@@ -28,6 +28,8 @@ namespace ChilliSoftAssessment.Controllers
         [HttpGet]
         public IActionResult StartMeeting() { return View(); }
 
+        [HttpGet]
+        public IActionResult StartAMeeting() { return View(); }
 
         [HttpGet]
         public IActionResult Rooms() { return View(); }

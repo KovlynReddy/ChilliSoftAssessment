@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ChilliSoftAssessment.Models
 {
-    public class RoomViewModel
+    public class RoomViewModel : BaseRoomViewModel
     {
     }
 }
