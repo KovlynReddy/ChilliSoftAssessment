@@ -1,4 +1,5 @@
 using ChilliSoftAssessment.Data;
+using ChilliSoftDLL.DataAccess.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -34,6 +35,7 @@ namespace ChilliSoftAssessment
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
+            services.AddScoped<IChilliDB,MeetingsProccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

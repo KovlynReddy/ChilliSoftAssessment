@@ -1,0 +1,7 @@
+﻿@model ChilliSoftAssessment.Models.ViewEmployeesViewModel
+
+@foreach (var item in Model.employees)
+{
+    <partial name="_Employee" model="item"></partial>
+    <br/>
+}
