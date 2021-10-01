@@ -15,8 +15,9 @@ namespace ChilliSoftAssessment.Models
         public List<Message> Messages { get; set; } = new List<Message>(); // message sent by minutemaster
 
         public List<Item> Items { get; set; } = new List<Item>();// for admin
+        public Item SelectedItem { get; set; } 
+        public string SelectedItemId { get; set; } 
         public List<Employee> Atteendies { get; set; } = new List<Employee>();
-        public Item SelectedItem { get; set; } //  for everyone
         public string Body { get; set; } // message for everyone
         public string MinutesMasterId { get; set; }
         public bool Live { get; set; }

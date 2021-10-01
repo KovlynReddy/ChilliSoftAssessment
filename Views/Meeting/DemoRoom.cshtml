@@ -2,6 +2,21 @@
 
 @{
     ViewData["Title"] = "DemoRoom";
+
+    List<SelectListItem> item = new List<SelectListItem>();
+    List<SelectListItem> attendies = new List<SelectListItem>();
+    if (Model.Items != null)
+    {
+        var allitems = Model.Items;
+        item = allitems.Select(a => new SelectListItem { Text = a.ItemName, Value = a.ItemId }).ToList();
+    }
+    if (Model.Atteendies != null)
+    {
+
+    var allattendies = Model.Atteendies;
+    attendies = allattendies.Select(a => new SelectListItem { Text = a.EmployeeName, Value = a.EmployeeId }).ToList();
+    }
+
 }
 
 <h1>DemoRoom</h1>
@@ -9,41 +24,59 @@
 <h4>ApplicationDbContextModelSnapshot</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-3">
+        @foreach (var emp in Model.Atteendies)
+        {
+
+            <partial name="_Employee" model="emp"></partial>
+
+        }
+    </div>
+    <div class="col-md-6">
         <form asp-action="DemoRoom">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="SelectedItemId" class="control-label"></label>
+                <select asp-for="SelectedItemId" asp-items="item"></select>
+                <span asp-validation-for="SelectedItemId" class="text-danger"></span>
+            </div>
 
-            @foreach (var item in Model.Atteendies)
+
+            @*<div class="row">
+                @foreach (var topic in Model.Items)
+                {
+                    <partial name="_ItemHead" model="topic"></partial>
+                }
+                </div>*@
+
+            @foreach (var topic in Model.Messages)
             {
+                @if (topic.Body != "J" && topic.Body != "JoInInG" && topic.ItemId != "Joined")
+                {
 
+                    <br />
+                    <div class="jumbotron">
+                        @topic.Body
+                    </div>
+                    <br />
+                }
             }
 
-            @foreach (var item in Model.Items)
-            {
-
-            }
-            @foreach (var item in Model.Messages)
-            {
-
-            }
-
-            @foreach (var item in Model.Comments)
-            {
-
-            }
             <div class="form-group">
                 <input asp-for="Body" class="form-control" />
             </div>
             <div class="form-group">
                 <input type="submit" value="Send" class="btn btn-primary" />
             </div>
+
         </form>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+    @*<div class="col-md-3"></div>*@
 </div>
+<a asp-action="ChangeItem" asp-controller="Meeting" asp-route-id="@Model.SelectedItemId" asp-route-meetingid="@Model.MeetingId" class="btn btn-success">Change Item</a>
+<a asp-action="RefreshMeeting" asp-controller="Meeting" asp-route-id="@Model.MeetingId" class="btn btn-secondary" >Refresh</a>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

@@ -43,6 +43,15 @@ namespace ChilliSoftAssessment.Data
             return entity;
         }
 
+        public Message AddMessage(Message entity)
+        {
+            db.Messages.Add(entity);
+
+            db.SaveChanges();
+
+            return entity;
+        }
+
         public MinutesEntry AddMinutes(MinutesEntry entity)
         {
             db.MinutesEntry.Add(entity);
@@ -73,6 +82,15 @@ namespace ChilliSoftAssessment.Data
         public Item DeleteItem(Item entity)
         {
             db.Items.Remove(entity);
+
+            db.SaveChanges();
+
+            return entity;
+        }
+
+        public Message DeleteMessage(Message entity)
+        {
+            db.Messages.Remove(entity);
 
             db.SaveChanges();
 
@@ -111,6 +129,11 @@ namespace ChilliSoftAssessment.Data
             throw new NotImplementedException();
         }
 
+        public List<Message> FilterMessages(string query)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<MinutesEntry> FilterMinutes(string query)
         {
             throw new NotImplementedException();
@@ -134,6 +157,11 @@ namespace ChilliSoftAssessment.Data
         public List<Meeting> GetAllMeetings()
         {
             return db.Meetings.ToList();
+        }
+
+        public List<Message> GetAllMessages()
+        {
+            return db.Messages.ToList();
         }
 
         public List<MinutesEntry> GetAllMinutes()
@@ -168,6 +196,22 @@ namespace ChilliSoftAssessment.Data
         {
             var iitems = db.Meetings.ToList();
             var item = iitems.FirstOrDefault(m => m.MeetingId == entity);
+
+            return item;
+        }
+
+        public Message GetMessage(Message entity)
+        {
+            var iitems = db.Messages.ToList();
+            var item = iitems.FirstOrDefault(m => m.MessageId == entity.MessageId);
+
+            return item;
+        }
+
+        public Message GetMessage(string entity)
+        {
+            var iitems = db.Messages.ToList();
+            var item = iitems.FirstOrDefault(m => m.MessageId == entity);
 
             return item;
         }
@@ -247,6 +291,11 @@ namespace ChilliSoftAssessment.Data
             db.SaveChanges();
 
             return selectedentity;
+        }
+
+        public Message UpdateMessage(Message entity)
+        {
+            throw new NotImplementedException();
         }
 
         public MinutesEntry UpdateMinutes(MinutesEntry entity)

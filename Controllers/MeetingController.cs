@@ -30,10 +30,43 @@ namespace ChilliSoftAssessment.Controllers
             model._Meeting = meeting;
 
             // join meeting by sending a message from sender with special code
+            var message = new Message();
+            message.MeetingId = id;
+            message.SenderId = User.Identity.Name;
+            message.TimeSent = DateTime.Now;
+            message.Body = "JoInInG";
+            message.ItemId = "Joined";
+            message.MessageId = Guid.NewGuid().ToString();
+            message.Type = "";
 
+            db.AddMessage(message);
+            
             // get state of cuttent BaseRoomViewModel
             // get all messages and comments
+            
+            var employees= db.GetAllEmployees();
+            List<Employee> attendies = new List<Employee>();
+            var meetings = db.GetAllMeetings().FirstOrDefault(m=>m.MeetingId == id);
+            var messages = db.GetAllMessages().Where(m=>m.MeetingId == id).ToList();
+            var comments = db.GetAllMessages().Where(m=>m.MeetingId == id).ToList();
+            var items = db.GetAllItems().Where(m=>m.LastMeetingId == id).ToList();
+            List<MinutesEntry> minutes = new List<MinutesEntry>();
+            foreach (var item in items)
+            {
+            minutes.AddRange(db.GetAllMinutes().Where(m=>m.ItemId == item.ItemId).ToList());
+            }
+            var messagerids = messages.Select(p => p.SenderId).Distinct().ToList();
+            foreach (var msg in messagerids)
+            {
+                attendies.Add(employees.FirstOrDefault(m=>m.Email == msg));
+            }
+
             // get all employees who sent messages to this meeting
+            model.MeetingId = id;
+            model.Atteendies = attendies ;
+            model.Comments = comments;
+            model.Messages = messages ;
+            model.Items = items; 
             // get all items associated with this meeting
 
             return View("DemoRoom",model); }
@@ -97,7 +130,7 @@ namespace ChilliSoftAssessment.Controllers
                 } // asssign item , employee and minute master
    
                 db.AddMeeting(newmeeting);
-                return View("Index","Home");
+                return View("SceduleMeeting");
             }
       
             assignedItem = new Item();
