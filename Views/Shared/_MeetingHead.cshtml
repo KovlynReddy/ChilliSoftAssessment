@@ -24,7 +24,7 @@
             @Html.DisplayFor(model => model.Type)
         </dd>
 
-        <a asp-action="JoinMeeting" asp-controller="Meeting">Join Room</a>
+        <a asp-action="JoinMeeting" asp-controller="Meeting" asp-route-id="@Model.MeetingId">Join Room</a>
      
     </dl>
 </div>

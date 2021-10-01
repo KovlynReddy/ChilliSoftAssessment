@@ -23,15 +23,49 @@ namespace ChilliSoftAssessment.Controllers
         }
 
         [HttpGet]
-        public IActionResult JoinMeeting() {
+        public IActionResult JoinMeeting(string id) {
 
+            var meeting = db.GetAllMeetings().FirstOrDefault(m=>m.MeetingId == id);
             BaseRoomViewModel model = new BaseRoomViewModel();
+            model._Meeting = meeting;
+
+            // join meeting by sending a message from sender with special code
+
+            // get state of cuttent BaseRoomViewModel
+            // get all messages and comments
+            // get all employees who sent messages to this meeting
+            // get all items associated with this meeting
 
             return View("DemoRoom",model); }
+
+        [HttpPost]
+        public IActionResult SendMessage() { 
+            // determine if the message is from the Minutes Master , Talker , or a Comment
+
+            return View(); }
+        [HttpPost]
+        public IActionResult EditItemStatus() { 
+            // choose from popup when changing Item
+            // Add relevent Information
+
+            return View(); }
+        [HttpGet]
+        public IActionResult RefreshRoom() { 
+            //Get Meeting
+            // Get Relevant Messages
+
+            return View(); }
+
+
         [HttpGet]
         public IActionResult AddItem() { return View(); }
         [HttpPost]
-        public IActionResult AddItem(Item model) { return View(); }
+        public IActionResult AddItem(Item model) {
+
+            model.ItemId = Guid.NewGuid().ToString();
+
+            db.AddItem(model);
+            return View(); }
 
         [HttpPost]
         public IActionResult SceduleMeeting(SceduleMeetingViewModel model) {
@@ -103,6 +137,11 @@ namespace ChilliSoftAssessment.Controllers
 
             return View("AvalibleRooms",meetings); }
 
+        [HttpPost]
+        public IActionResult JoinRoom(string id) {
+
+            return View();
+        }
 
         [HttpGet]
         public IActionResult History() { return View(); }
