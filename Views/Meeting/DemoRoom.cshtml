@@ -19,55 +19,50 @@
 
 }
 
-<h1>DemoRoom</h1>
-
-<h4>ApplicationDbContextModelSnapshot</h4>
-<hr />
 <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-4">
         @foreach (var emp in Model.Atteendies)
         {
-
+            <div style="width:inherit">
             <partial name="_Employee" model="emp"></partial>
-
+                </div>
         }
     </div>
-    <div class="col-md-6">
-        <form asp-action="DemoRoom">
+    <div class="col-md-8">
+        <form asp-action="SendMessage" asp-controller="Meeting">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
             <div class="form-group">
                 <label asp-for="SelectedItemId" class="control-label"></label>
                 <select asp-for="SelectedItemId" asp-items="item"></select>
                 <span asp-validation-for="SelectedItemId" class="text-danger"></span>
             </div>
 
-
             @*<div class="row">
-                @foreach (var topic in Model.Items)
+        @foreach (var topic in Model.Items)
+        {
+            <partial name="_ItemHead" model="topic"></partial>
+        }
+        </div>*@
+            <div class="jumbotron">
+                @foreach (var topic in Model.Messages)
                 {
-                    <partial name="_ItemHead" model="topic"></partial>
-                }
-                </div>*@
+                    @if (topic.Body != "J" && topic.Body != "JoInInG" && topic.ItemId != "Joined")
+                    {
 
-            @foreach (var topic in Model.Messages)
-            {
-                @if (topic.Body != "J" && topic.Body != "JoInInG" && topic.ItemId != "Joined")
-                {
-
-                    <br />
-                    <div class="jumbotron">
+                        <br />
                         @topic.Body
-                    </div>
-                    <br />
+                        <br />
+                    }
                 }
-            }
+            </div>
+            <input type="hidden" asp-for="MeetingId" class="btn btn-primary" />
 
             <div class="form-group">
                 <input asp-for="Body" class="form-control" />
-            </div>
-            <div class="form-group">
                 <input type="submit" value="Send" class="btn btn-primary" />
-            </div>
+
 
         </form>
     </div>

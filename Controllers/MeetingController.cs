@@ -72,7 +72,53 @@ namespace ChilliSoftAssessment.Controllers
             return View("DemoRoom",model); }
 
         [HttpPost]
-        public IActionResult SendMessage() { 
+        public IActionResult SendMessage(BaseRoomViewModel newmessage) {
+
+            var meeting = db.GetAllMeetings().FirstOrDefault(m => m.MeetingId == newmessage.MeetingId);
+            BaseRoomViewModel model = new BaseRoomViewModel();
+            model._Meeting = meeting;
+
+            // join meeting by sending a message from sender with special code
+            var message = new Message();
+            message.MeetingId = newmessage.MeetingId;
+            message.SenderId = User.Identity.Name;
+            message.TimeSent = DateTime.Now;
+            message.Body = newmessage.Body;
+            message.ItemId = newmessage.SelectedItemId;
+            message.MessageId = Guid.NewGuid().ToString();
+            message.Type = "Demo";
+
+            db.AddMessage(message);
+
+            // get state of cuttent BaseRoomViewModel
+            // get all messages and comments
+
+            var employees = db.GetAllEmployees();
+            List<Employee> attendies = new List<Employee>();
+            var meetings = db.GetAllMeetings().FirstOrDefault(m => m.MeetingId == newmessage.MeetingId);
+            var messages = db.GetAllMessages().Where(m => m.MeetingId == newmessage.MeetingId).ToList();
+            var comments = db.GetAllMessages().Where(m => m.MeetingId == newmessage.MeetingId).ToList();
+            var items = db.GetAllItems().Where(m => m.LastMeetingId == newmessage.MeetingId).ToList();
+            List<MinutesEntry> minutes = new List<MinutesEntry>();
+            foreach (var item in items)
+            {
+                minutes.AddRange(db.GetAllMinutes().Where(m => m.ItemId == item.ItemId).ToList());
+            }
+            var messagerids = messages.Select(p => p.SenderId).Distinct().ToList();
+            foreach (var msg in messagerids)
+            {
+                attendies.Add(employees.FirstOrDefault(m => m.Email == msg));
+            }
+
+            // get all employees who sent messages to this meeting
+            model.MeetingId = newmessage.MeetingId;
+            model.Atteendies = attendies;
+            model.Comments = comments;
+            model.Messages = messages;
+            model.Items = items;
+            // get all items associated with this meeting
+
+            return View("DemoRoom", model);
             // determine if the message is from the Minutes Master , Talker , or a Comment
 
             return View(); }

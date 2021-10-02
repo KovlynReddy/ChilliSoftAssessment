@@ -1,9 +1,10 @@
 ﻿@model ChilliSoftDLL.Models.Employee
 
 <div class="media border p-3">
-    <img src="~/StalkProfile.png" alt="John Doe" class="mr-3 mt-3 rounded-circle" style="width:auto">
+    <img src="~/StalkProfile.png" alt="John Doe" class="mr-3 mt-3 rounded-circle" style="width:40px">
     <div class="media-body">
-        <h4>@Model.EmployeeName.<small><i>@Model.EmployeePosition</i></small></h4>
+        <h4>@Model.EmployeeName<br/>
+        <small><i>@Model.EmployeePosition</i></small></h4>
         <p>@Model.EmployeeId</p>
     </div>
 </div>

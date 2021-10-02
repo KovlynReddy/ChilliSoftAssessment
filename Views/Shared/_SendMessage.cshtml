@@ -1,0 +1,10 @@
+﻿@model ChilliSoftDLL.Models.Message
+
+<form asp-action="SendMessage" asp-controller="Meeting" asp-route-id="@Model">
+<div class="form-group">
+    <input asp-for="@Model.Body" class="form-control" />
+</div>
+<div class="form-group">
+    <input type="submit" value="Send" class="btn btn-primary" />
+</div>
+</form>
