@@ -27,7 +27,7 @@ namespace ChilliSoftAssessment.Controllers
 
             var meeting = db.GetAllMeetings().FirstOrDefault(m=>m.MeetingId == id);
             BaseRoomViewModel model = new BaseRoomViewModel();
-            model._Meeting = meeting;
+            //model._Meeting = meeting;
 
             // join meeting by sending a message from sender with special code
             var message = new Message();
@@ -47,7 +47,7 @@ namespace ChilliSoftAssessment.Controllers
             var employees= db.GetAllEmployees();
             List<Employee> attendies = new List<Employee>();
             var meetings = db.GetAllMeetings().FirstOrDefault(m=>m.MeetingId == id);
-            var messages = db.GetAllMessages().Where(m=>m.MeetingId == id).ToList();
+            var messages = db.GetAllMessages().Where(m=>m.MeetingId == id).Take(100).ToList();
             var comments = db.GetAllMessages().Where(m=>m.MeetingId == id).ToList();
             var items = db.GetAllItems().Where(m=>m.LastMeetingId == id).ToList();
             List<MinutesEntry> minutes = new List<MinutesEntry>();
@@ -76,7 +76,7 @@ namespace ChilliSoftAssessment.Controllers
 
             var meeting = db.GetAllMeetings().FirstOrDefault(m => m.MeetingId == newmessage.MeetingId);
             BaseRoomViewModel model = new BaseRoomViewModel();
-            model._Meeting = meeting;
+            //model._Meeting = meeting;
 
             // join meeting by sending a message from sender with special code
             var message = new Message();
@@ -134,6 +134,22 @@ namespace ChilliSoftAssessment.Controllers
             // Get Relevant Messages
 
             return View(); }
+        [HttpPost]
+        public IActionResult ChangeMeetingItem(BaseRoomViewModel model) {
+            //Get Meeting
+            var selectedmeeting = db.GetAllMeetings().FirstOrDefault(m=>m.MeetingId == model.MeetingId);
+            var selecteditem = db.GetAllItems().FirstOrDefault(m=>m.ItemId == model.SelectedItemId);
+
+            selecteditem.meetingstatus = model.SelectedItem;
+
+            db.UpdateMeeting(selectedmeeting);
+            db.UpdateItem(selecteditem);
+
+            // Get Relevant Messages
+            //selecteditem.meetingstatus;
+            // update item status
+
+            return View("JoinMeeting",new { id=model.MeetingId}); }
 
 
         [HttpGet]

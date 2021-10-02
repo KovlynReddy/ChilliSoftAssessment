@@ -266,6 +266,7 @@ namespace ChilliSoftAssessment.Data
             selectedentity.EmployeeResponsible = entity.EmployeeResponsible;
             selectedentity.ItemId = entity.ItemId;
             selectedentity.LastMeetingId = entity.LastMeetingId;
+            selectedentity.meetingstatus = entity.meetingstatus;
             selectedentity.ItemTalker = entity.ItemTalker;
 
             db.Entry(selectedentity).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
