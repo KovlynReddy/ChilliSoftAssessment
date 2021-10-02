@@ -3,7 +3,7 @@
 @{
     List<SelectListItem> item = new List<SelectListItem>();
     List<SelectListItem> attendies = new List<SelectListItem>();
-    if (Model.Items != null)
+    if (Model != null || Model.Items != null)
     {
         var allitems = Model.Items;
         item = allitems.Select(a => new SelectListItem { Text = a.ItemName, Value = a.ItemId }).ToList();

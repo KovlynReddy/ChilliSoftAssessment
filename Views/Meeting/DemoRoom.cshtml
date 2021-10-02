@@ -8,7 +8,7 @@
     if (Model.Items != null)
     {
         var allitems = Model.Items;
-        item = allitems.Select(a => new SelectListItem { Text = a.ItemName, Value = a.ItemId }).ToList();
+        item = allitems.Select(a => new SelectListItem { Text = a.Description, Value = a.ItemId }).ToList();
     }
     if (Model.Atteendies != null)
     {
@@ -30,6 +30,31 @@
     </div>
     <div class="col-md-8">
         <form asp-action="SendMessage" asp-controller="Meeting">
+            @if (Model.Atteendies != null && Model.Atteendies.Count > 0)
+            {
+
+                @for (int i = 0; i < Model.Atteendies.Count(); i++)
+                {
+                    <input asp-for="Atteendies[i].EmployeeId" type="hidden" />
+                    <input asp-for="Atteendies[i].EmployeeName" type="hidden" />
+                    <input asp-for="Atteendies[i].EmployeePosition" type="hidden" />
+
+                }
+            }
+            @if (Model.Items != null && Model.Items.Count > 0)
+            {
+                @for (int i = 0; i < Model.Items.Count(); i++)
+                {
+                    <input asp-for="Items[i].ItemId" type="hidden" />
+                    <input asp-for="Items[i].ItemName" type="hidden" />
+                    <input asp-for="Items[i].Description" type="hidden" />
+                    <input asp-for="Items[i].LastMeetingId" type="hidden" />
+                    <input asp-for="Items[i].Categorey" type="hidden" />
+                    <input asp-for="Items[i].EmployeeResponsible" type="hidden" />
+                    <input asp-for="Items[i].ItemTalker" type="hidden" />
+
+                }
+            }
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
 

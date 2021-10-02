@@ -70,7 +70,7 @@ namespace ChilliSoftAssessment.Controllers
             // get all items associated with this meeting
 
             return View("DemoRoom",model); }
-
+            
         [HttpPost]
         public IActionResult SendMessage(BaseRoomViewModel newmessage) {
 
@@ -162,6 +162,7 @@ namespace ChilliSoftAssessment.Controllers
                 newmeeting.StartDateTime = model.DateSceduled;
                 newmeeting.Caption = model.Caption;
                 newmeeting.Type = model.Caption;
+                newmeeting.StartDateTime = model.Date;
                 assignedItem = new Item();
                 assignedItem.ItemId = item;
                 assignedItem.EmployeeResponsible = model.SelectedEmployee;
@@ -171,12 +172,16 @@ namespace ChilliSoftAssessment.Controllers
                 {
                     
                     aitem.LastMeetingId = newmeeting.MeetingId ;
-
+                    var thisitem = model.Items.FirstOrDefault(m => m.ItemId == aitem.ItemId);
+                    aitem.Description = thisitem.Description;
+                    aitem.Categorey = thisitem.Categorey;
+                    aitem.EmployeeResponsible = model.SelectedEmployee;
+                
                     db.AddItem(aitem);
                 } // asssign item , employee and minute master
    
                 db.AddMeeting(newmeeting);
-                return View("SceduleMeeting");
+                return View("Rooms");
             }
       
             assignedItem = new Item();
