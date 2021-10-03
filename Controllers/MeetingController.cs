@@ -121,7 +121,8 @@ namespace ChilliSoftAssessment.Controllers
             return View("DemoRoom", model);
             // determine if the message is from the Minutes Master , Talker , or a Comment
 
-            return View(); }
+            return View();
+        }
         [HttpPost]
         public IActionResult EditItemStatus() { 
             // choose from popup when changing Item
