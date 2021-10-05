@@ -38,8 +38,8 @@
     new SelectListItem() { Text = "Closed", Value = "Closed" },
     new SelectListItem() { Text = "na", Value = "na" },
     new SelectListItem() { Text = "awaiting", Value = "awaiting" },
-    new SelectListItem() { Text = "invoiceing", Value = "invoiceing" }})
-
+    new SelectListItem() { Text = "invoiceing", Value = "invoiceing" }}
+            , new { onchange = "this.form.submit()" })
         }
         <form asp-action="SendMessage" asp-controller="Meeting">
             @if (Model.Atteendies != null && Model.Atteendies.Count > 0)
