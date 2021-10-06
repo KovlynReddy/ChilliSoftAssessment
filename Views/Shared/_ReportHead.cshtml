@@ -1,0 +1,11 @@
+﻿@model ChilliSoftDLL.Models.Meeting
+
+
+<div class="media border p-3">
+    <img src="~/StalkItem.png" alt="John Doe" class="mr-3 mt-3 rounded-circle" style="width:60px;">
+    <div class="media-body">
+        <h4>@Model.Caption<small><i>@Model.StartDateTime</i></small></h4>
+        <a asp-action="ViewReport" asp-controller="Home" asp-route-id="@Model.MeetingId">Join Room</a>
+
+    </div>
+</div>

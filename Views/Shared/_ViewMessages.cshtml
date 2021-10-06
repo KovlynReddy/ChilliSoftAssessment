@@ -1,0 +1,55 @@
+﻿@model IEnumerable<ChilliSoftDLL.Models.Message>
+
+
+<table class="table">
+    <thead>
+        <tr>
+
+            <th>
+                @Html.DisplayNameFor(model => model.MeetingId)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.TimeSent)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ItemId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SenderId)
+            </th>
+          
+         
+            <th>
+                @Html.DisplayNameFor(model => model.Body)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+
+
+            <td>
+                @Html.DisplayFor(modelItem => item.MeetingId)
+            </td>
+           
+            <td>
+                @Html.DisplayFor(modelItem => item.TimeSent)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ItemId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SenderId)
+            </td>
+            
+            <td>
+                @Html.DisplayFor(modelItem => item.Body)
+            </td>
+ 
+        </tr>
+}
+    </tbody>
+</table>
