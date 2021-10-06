@@ -92,6 +92,13 @@ namespace ChilliSoftAssessment.Controllers
                 attendies.Add(employees.FirstOrDefault(m=>m.Email == msg));
             }
 
+            var myprofile = db.GetAllEmployees().FirstOrDefault(m=>m.Email == User.Identity.Name);
+            if (meeting.MinutesMaster == User.Identity.Name)
+            {
+                model.IsAdmin = true;
+            }
+            else { model.IsAdmin = false; }
+
             // get all employees who sent messages to this meeting
             model.MeetingId = id;
             model.Atteendies = attendies ;
@@ -335,7 +342,7 @@ namespace ChilliSoftAssessment.Controllers
             string someArrows = new string(new char[] { '\u2190', '\u2191', '\u2192', '\u2193' });
             message.Body += Environment.NewLine + someArrows;
             message.BodyEncoding = System.Text.Encoding.UTF8;
-            message.Subject = "Policy Payment " + someArrows;
+            message.Subject = "Meeting Invite " + someArrows;
             message.SubjectEncoding = System.Text.Encoding.UTF8;
             // Set the method that is called back when the send operation ends.
             client.SendCompleted += new SendCompletedEventHandler(SendCompletedCallback);
@@ -363,8 +370,8 @@ namespace ChilliSoftAssessment.Controllers
             var email = await Email
                 .From(emailAddress: "TechnoSolutions0001@gmail.com")
                 .To(emailAddress: address, name: "Hi User")
-                .Subject(subject: " Policy Payment ")
-                .Body(body: "Policy Payment \n" + amessage)
+                .Subject(subject: " Meeting Invite ")
+                .Body(body: "Please Take Note Of the Following :  \n" + amessage)
                 .SendAsync();
 
             int result = 0;

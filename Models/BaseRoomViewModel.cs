@@ -22,6 +22,7 @@ namespace ChilliSoftAssessment.Models
         public string Body { get; set; } // message for everyone
         public string MinutesMasterId { get; set; }
         public bool Live { get; set; }
+        public bool IsAdmin { get; set; }
         public Employee MinutesMaster { get; set; }
     }
 }

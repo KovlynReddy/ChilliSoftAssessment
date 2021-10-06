@@ -29,6 +29,10 @@
         }
     </div>
     <div class="col-md-6">
+        @if (Model.IsAdmin)
+        {
+
+        
         @using (Html.BeginForm("ChangeMeetingItem", "Meeting", Model))
         {
             @Html.DropDownListFor(m => m.SelectedItemId, item, new { onchange = "this.form.submit()" })
@@ -40,6 +44,7 @@
     new SelectListItem() { Text = "awaiting", Value = "awaiting" },
     new SelectListItem() { Text = "invoiceing", Value = "invoiceing" }}
             , new { onchange = "this.form.submit()" })
+        }
         }
         <form asp-action="SendMessage" asp-controller="Meeting">
             @if (Model.Atteendies != null && Model.Atteendies.Count > 0)
