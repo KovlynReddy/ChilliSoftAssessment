@@ -1,10 +1,15 @@
 ﻿using ChilliSoftAssessment.Models;
 using ChilliSoftDLL.DataAccess.Interfaces;
 using ChilliSoftDLL.Models;
+using FluentEmail.Core;
+using FluentEmail.Smtp;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Threading.Tasks;
 
 namespace ChilliSoftAssessment.Controllers
@@ -22,7 +27,33 @@ namespace ChilliSoftAssessment.Controllers
             return View();
         }
 
-        [HttpGet]
+        public IActionResult InviteEmployees(string id) {
+
+            InviteEmployeeViewModel model = new InviteEmployeeViewModel();
+
+            model.MeetingId = id;
+            model.employees = db.GetAllEmployees();
+
+
+            return View(model); }
+        public async Task<IActionResult> InviteEmployee(InviteEmployeeViewModel model)
+        {
+
+            var selectedEmployee = db.GetAllEmployees().FirstOrDefault(m => m.EmployeeId == model.SelectedEmployee);
+            var selectedMeeting = db.GetAllMeetings().FirstOrDefault(m => m.MeetingId == model.MeetingId);
+
+            // send invite to this employee via email
+
+            await SendMail($"Please Attend the Meeting Sceduled for {selectedMeeting.StartDateTime}", selectedEmployee.Email);
+
+            if (model.done)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            return RedirectToAction("InviteEmployees", "Meeting", new { id = model.MeetingId });
+        }
+            [HttpGet]
         public IActionResult JoinMeeting(string id) {
 
             var meeting = db.GetAllMeetings().FirstOrDefault(m=>m.MeetingId == id);
@@ -198,7 +229,7 @@ namespace ChilliSoftAssessment.Controllers
                 } // asssign item , employee and minute master
    
                 db.AddMeeting(newmeeting);
-                return View("Rooms");
+                return RedirectToAction("InviteEmployees","Meeting",new {id = newmeeting.MeetingId });
             }
       
             assignedItem = new Item();
@@ -260,7 +291,85 @@ namespace ChilliSoftAssessment.Controllers
             return View(model); 
         
         }
+        private static void SendCompletedCallback(object sender, AsyncCompletedEventArgs e)
+        {
+            // Get the unique identifier for this asynchronous operation.
+            String token = (string)e.UserState;
 
+            if (e.Cancelled)
+            {
+                Console.WriteLine("[{0}] Send canceled.", token);
+            }
+            if (e.Error != null)
+            {
+                Console.WriteLine("[{0}] {1}", token, e.Error.ToString());
+            }
+            else
+            {
+                Console.WriteLine("Message sent.");
+            }
+
+        }
+        public async Task SendMail(string amessage, string address)
+        {
+
+            #region mail1
+
+            SmtpClient client = new SmtpClient("smtp.gmail.com");
+            client.Credentials = new System.Net.NetworkCredential("Techno Solutions01", "T3$0em01");
+            client.Port = 587;
+            client.EnableSsl = true;
+            // Specify the email sender.
+            // Create a mailing address that includes a UTF8 character
+            // in the display name.
+            MailAddress from = new MailAddress("TechnoSolutions0001@gmail.com",
+               "Techno" + (char)0xD8 + "Solutions01", System.Text.Encoding.UTF8);
+            // Set destinations for the email message.
+            MailAddress to = new MailAddress(address);
+            // Specify the message content.
+
+            MailMessage message = new MailMessage(from, to);
+
+            message.Body = " " + amessage;
+            // Include some non-ASCII characters in body and subject.
+            string someArrows = new string(new char[] { '\u2190', '\u2191', '\u2192', '\u2193' });
+            message.Body += Environment.NewLine + someArrows;
+            message.BodyEncoding = System.Text.Encoding.UTF8;
+            message.Subject = "Policy Payment " + someArrows;
+            message.SubjectEncoding = System.Text.Encoding.UTF8;
+            // Set the method that is called back when the send operation ends.
+            client.SendCompleted += new SendCompletedEventHandler(SendCompletedCallback);
+            // The userState can be any object that allows your callback
+            // method to identify this send operation.
+            // For this example, the userToken is a string constant.
+
+
+            //client.Send(message);
+
+            #endregion
+
+            #region Mail2
+
+            var sender = new SmtpSender(() => new SmtpClient(host: "smtp.gmail.com")
+            {
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                Port = 587,
+                Credentials = new NetworkCredential("TechnoSolutions0001@gmail.com", "T3$0em01")
+            });
+
+            Email.DefaultSender = sender;
+
+            var email = await Email
+                .From(emailAddress: "TechnoSolutions0001@gmail.com")
+                .To(emailAddress: address, name: "Hi User")
+                .Subject(subject: " Policy Payment ")
+                .Body(body: "Policy Payment \n" + amessage)
+                .SendAsync();
+
+            int result = 0;
+            #endregion
+        }
 
     }
 }

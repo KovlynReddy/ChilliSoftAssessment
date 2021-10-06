@@ -1,0 +1,41 @@
+﻿@model ChilliSoftAssessment.Models.InviteEmployeeViewModel
+
+@{
+    ViewData["Title"] = "InviteEmployees";
+}
+
+<h1>InviteEmployees</h1>
+
+@{ 
+    List<SelectListItem> attendies = new List<SelectListItem>();
+    if (Model.employees != null)
+    {
+        var allitems = Model.employees;
+        attendies = allitems.Select(a => new SelectListItem { Text = a.Email, Value = a.EmployeeId }).ToList();
+    }
+}
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="InviteEmployee" asp-controller="Meeting">
+            <div asp-validation-summary="ModelOnly " class="text-danger"></div>
+            <input type="hidden" asp-for="MeetingId" class="form-control" />
+
+            @Html.DropDownListFor(m => m.SelectedEmployee, attendies) @*, new { onchange = "this.form.submit()" }*@
+            
+            <div class="form-group">
+                <label asp-for="done" class="control-label"></label>
+                <input asp-for="done"></input>
+                <span asp-validation-for="done" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Invite" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
