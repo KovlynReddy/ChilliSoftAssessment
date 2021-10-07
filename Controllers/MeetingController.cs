@@ -80,7 +80,7 @@ namespace ChilliSoftAssessment.Controllers
             var meetings = db.GetAllMeetings().FirstOrDefault(m=>m.MeetingId == id);
             var messages = db.GetAllMessages().Where(m=>m.MeetingId == id).Take(100).ToList();
             var comments = db.GetAllMessages().Where(m=>m.MeetingId == id).ToList();
-            var items = db.GetAllItems().Where(m=>m.LastMeetingId == id).ToList();
+            var items = db.GetAllItems().Where(m=>m.LastMeetingId == id && m.Description != null).ToList();
             List<MinutesEntry> minutes = new List<MinutesEntry>();
             foreach (var item in items)
             {
@@ -179,6 +179,7 @@ namespace ChilliSoftAssessment.Controllers
             var selectedmeeting = db.GetAllMeetings().FirstOrDefault(m=>m.MeetingId == model.MeetingId);
             var selecteditem = db.GetAllItems().FirstOrDefault(m=>m.ItemId == model.SelectedItemId);
 
+            selecteditem.ItemTalker = selectedmeeting.Type;
             selecteditem.meetingstatus = model.SelectedItem;
 
             db.UpdateMeeting(selectedmeeting);
@@ -204,7 +205,7 @@ namespace ChilliSoftAssessment.Controllers
         [HttpPost]
         public IActionResult SceduleMeeting(SceduleMeetingViewModel model) {
             model.Employees = db.GetAllEmployees();
-            model.Items = db.GetAllItems();
+            model.Items = db.GetAllItems().Where(m=>m.ItemName!=null).OrderBy(m => m.ItemTalker).ToList();
 
             var newmeeting = new Meeting();
             var assignedItem = new Item();
@@ -216,7 +217,7 @@ namespace ChilliSoftAssessment.Controllers
                 newmeeting.MinutesMaster = User.Identity.Name;
                 newmeeting.StartDateTime = model.DateSceduled;
                 newmeeting.Caption = model.Caption;
-                newmeeting.Type = model.Caption;
+                newmeeting.Type = model.MeetingType;
                 newmeeting.StartDateTime = model.Date;
                 assignedItem = new Item();
                 assignedItem.ItemId = item;
@@ -251,7 +252,7 @@ namespace ChilliSoftAssessment.Controllers
             SceduleMeetingViewModel model = new SceduleMeetingViewModel();
 
             model.Employees = db.GetAllEmployees();
-            model.Items = db.GetAllItems();
+            model.Items = db.GetAllItems().Where(m=>m.ItemName!=null).OrderBy(m=>m.ItemTalker).ToList();
 
             return View(model);
         }

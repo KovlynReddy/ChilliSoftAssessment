@@ -22,6 +22,8 @@ namespace ChilliSoftAssessment.Models
 
         public DateTime DateSceduled { get; set; }
 
+        public string MeetingType { get; set; }
+
         public string Caption { get; set; }
         public bool Done { get; set; }
     }

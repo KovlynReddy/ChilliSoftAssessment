@@ -6,7 +6,7 @@
     if (Model != null || Model.Items != null)
     {
         var allitems = Model.Items;
-        item = allitems.Select(a => new SelectListItem { Text = a.ItemName, Value = a.ItemId }).ToList();
+        item = allitems.Select(a => new SelectListItem { Text = a.Description, Value = a.ItemId }).ToList();
 
         var allattendies = Model.Employees;
         attendies = allattendies.Select(a => new SelectListItem { Text = a.EmployeeName, Value = a.EmployeeId }).ToList();
@@ -42,33 +42,42 @@
 
         }
     }
-        <div class="form-group">
-            <label asp-for="Date" class="control-label"></label>
-            <input asp-for="Date"></input>
-        </div>
-        <div class="form-group">
-            <label asp-for="Caption" class="control-label"></label>
-            <input asp-for="Caption" class="form-control" />
-            <span asp-validation-for="Caption" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="SelectedItem" class="control-label"></label>
-            <select asp-for="SelectedItem" asp-items="item"></select>
-            <span asp-validation-for="SelectedItem" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="SelectedEmployee" class="control-label"></label>
-            <select asp-for="SelectedEmployee" asp-items="attendies"></select>
-            <span asp-validation-for="SelectedEmployee" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="Done" class="control-label"></label>
-            <input asp-for="Done"></input>
-            <span asp-validation-for="Done" class="text-danger"></span>
-        </div>
+    <div class="form-group">
+        <label asp-for="MeetingType" class="control-label"></label>
+    @Html.DropDownListFor(m => m.MeetingType, new SelectListItem[]{
+new SelectListItem() { Text = "MANCO", Value = "MANCO" },
+new SelectListItem() { Text = "Finance", Value = "Finance" },
+new SelectListItem() { Text = "Project Team Leader", Value = "Project Team Leader" } })
 
-        <input type="submit" name="name" value="Start" />
-    </form>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Date" class="control-label"></label>
+        <input asp-for="Date"></input>
+    </div>
+    <div class="form-group">
+        <label asp-for="Caption" class="control-label"></label>
+        <input asp-for="Caption" class="form-control" />
+        <span asp-validation-for="Caption" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="SelectedItem" class="control-label"></label>
+        <select asp-for="SelectedItem" asp-items="item"></select>
+        <span asp-validation-for="SelectedItem" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="SelectedEmployee" class="control-label"></label>
+        <select asp-for="SelectedEmployee" asp-items="attendies"></select>
+        <span asp-validation-for="SelectedEmployee" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Done" class="control-label"></label>
+        <input asp-for="Done"></input>
+        <span asp-validation-for="Done" class="text-danger"></span>
+    </div>
+
+    <input type="submit" name="name" value="Start" />
+</form>
     @if (Model.SelectedEmployees != null && Model.SelectedEmployees.Count > 0)
     {
 
